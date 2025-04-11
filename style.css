@@ -299,7 +299,7 @@ body {
   .input {
       min-height: 40px !important; /* Adjust min-height for mobile */
       font-size: 12px;
-      padding: 9px 12px; /* Adjust padding */
+      padding: 10px 12px; /* Adjust padding */
   }
   .btnenviar {
       width: 40px;
