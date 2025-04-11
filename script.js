@@ -45,9 +45,9 @@ document.addEventListener('DOMContentLoaded', () => {
         // Step 1: User replies, Rei asks about promotions
         {
             messages: [
-                { sender: 'rei', text: 'Valeu por compartilhar sua opinião!' },
                 { sender: 'rei', text: 'E me diz uma coisa:' },
-                { sender: 'rei', text: 'Você costuma participar das nossas promoções, tipo o Clube da Realeza ou o Retorno do Rei?', isQuestion: true }
+                { sender: 'rei', text: 'Você costuma participar das nossas promoções, tipo o Clube da Realeza ou o Retorno do Rei?' },
+                { sender: 'rei', text: 'O que você acha delas?' , isQuestion: true }
             ],
             expectsInput: true,
             inputType: 'text'
@@ -70,14 +70,11 @@ document.addEventListener('DOMContentLoaded', () => {
             expectsInput: true,
             inputType: 'number'
         },
-        // Step 4: User replies (rating), Rei thanks and ends
+        // Step 4: User replies (rating), Rei thanks and ends (Messages handled dynamically)
         {
-            messages: [
-                { sender: 'rei', text: 'Muito obrigado pela sua participação.' },
-                { sender: 'rei', text: 'Recebemos a sua mensagem.' }
-            ],
+            messages: [], // Messages are now dynamically set based on rating
             expectsInput: false,
-            hideFooter: true
+            hideFooter: true // Still need this flag for processStep logic if it were called, but displayFinalMessages handles footer now.
         }
     ];
 
@@ -226,6 +223,36 @@ document.addEventListener('DOMContentLoaded', () => {
         }
     }
 
+    // New function to display final messages
+    async function displayFinalMessages(messages) {
+        disableInput();
+
+        for (let i = 0; i < messages.length; i++) {
+            const msg = messages[i];
+            const delay = i === 0 ? 500 : 1000; // Delay between final messages
+            await new Promise(resolve => setTimeout(resolve, delay));
+
+            // Re-use typing indicator logic
+            if (msg.sender === 'rei') { // Should always be rei for final messages
+                const typingDuration = 1500; // Typing duration for final messages
+                const reiBubble = addMessage('rei', '', '<span class="typing-indicator"><span></span></span>');
+                await new Promise(resolve => setTimeout(resolve, typingDuration));
+                reiBubble.innerHTML = `<span class="fade-in-content content-hidden">${msg.text}</span>`;
+                const textSpan = reiBubble.querySelector('.fade-in-content');
+                if (textSpan) {
+                    requestAnimationFrame(() => {
+                        requestAnimationFrame(() => { textSpan.classList.remove('content-hidden'); });
+                    });
+                }
+                 window.scrollTo({ top: document.body.scrollHeight, behavior: 'smooth' });
+            }
+        }
+
+        // Hide footer after messages
+        await new Promise(resolve => setTimeout(resolve, 1000));
+        footer.classList.add('footer-hidden');
+    }
+
     function handleSend() {
         const text = userInput.value.trim();
         if (!text) return;
@@ -279,25 +306,51 @@ document.addEventListener('DOMContentLoaded', () => {
             // Don't proceed to the next step yet, wait for elaboration
             return;
         } else {
-             // Normal flow: Answer wasn't short, or it's the rating step, or other steps
-            // Input validation for number step (already happens before this block)
-             if (currentStepConfig.inputType === 'number') {
+             // Normal flow or rating step
+            if (currentStep === 3) { // Rating step submission
+                 // --- Rating Input Validation --- (Handles number format and range)
                  if (!/^[0-9]+$/.test(text)) {
-                     // This alert should ideally not be reachable if real-time validation works
                      alert('Por favor, insira apenas números.');
                      enableInput(currentStepConfig.inputType); // Re-enable if invalid
                      return;
                  }
-                 const number = parseInt(text, 10);
-                 if (number < 0 || number > 10) {
+                 const rating = parseInt(text, 10);
+                 if (rating < 0 || rating > 10) {
                       alert('Por favor, insira um número entre 0 e 10.');
                       enableInput(currentStepConfig.inputType); // Re-enable if invalid
                       return;
                  }
+                 // --- End Validation ---
+
+                 let finalMessages = [];
+
+                 if (rating <= 6) { // 0-6
+                     finalMessages = [
+                         { sender: 'rei', text: 'Valeu por contar como tá sendo sua experiência.' },
+                         { sender: 'rei', text: 'A gente tá ouvindo tudo pra melhorar cada vez mais.' }
+                     ];
+                 } else if (rating <= 8) { // 7-8
+                     finalMessages = [
+                         { sender: 'rei', text: 'Obrigado por contar o que achou!' },
+                         { sender: 'rei', text: 'Estamos felizes que você esteja gostando. Ouvir você nos faz melhorar cada vez mais.' } // Corrected grammar
+                     ];
+                 } else { // 9-10
+                     finalMessages = [
+                         { sender: 'rei', text: 'Valeu demais por trocar essa ideia com a gente!' },
+                         { sender: 'rei', text: 'É demais saber que você curte tanto o Rei do Pitaco! Valeu por estar com a gente nessa jornada! 👑' }
+                     ];
+                 }
+
+                 // Display final messages and end chat
+                 displayFinalMessages(finalMessages);
+                 currentStep++; // Advance step index
+                 return; // Stop handleSend here
+
+             } else {
+                 // Proceed to the next step (for steps 0, 1, 2)
+                currentStep++;
+                processStep(currentStep);
              }
-            // Proceed to the next step
-            currentStep++;
-            processStep(currentStep);
         }
         // --- Short Answer Check --- END ---
     }
