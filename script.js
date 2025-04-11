@@ -29,7 +29,7 @@ document.addEventListener('DOMContentLoaded', () => {
 
     let currentStep = 0;
     let awaitingElaboration = false; // Flag for short answer follow-up
-    const minResponseLength = 10; // Minimum characters for a non-short answer
+    const minResponseLength = 25; // Minimum characters for a non-short answer
 
     const chatSteps = [
         // Step 0: Initial messages from Rei
@@ -45,13 +45,23 @@ document.addEventListener('DOMContentLoaded', () => {
         // Step 1: User replies, Rei asks about promotions
         {
             messages: [
-                { sender: 'rei', text: 'Importante saber a sua opinião.' },
-                { sender: 'rei', text: 'Você tem gostado das nossas promoções, como Clube da Realeza, Retorno do Rei, etc...', isQuestion: true }
+                { sender: 'rei', text: 'Valeu por compartilhar sua opinião!' },
+                { sender: 'rei', text: 'E me diz uma coisa:' },
+                { sender: 'rei', text: 'Você costuma participar das nossas promoções, tipo o Clube da Realeza ou o Retorno do Rei?', isQuestion: true }
             ],
             expectsInput: true,
             inputType: 'text'
         },
-        // Step 2: User replies, Rei asks for rating
+        // Step 2: User replies, Rei asks about feeling if service was unavailable
+        {
+            messages: [
+                { sender: 'rei', text: 'Agora, uma perguntinha rápida.' },
+                { sender: 'rei', text: 'Como você se sentiria se não pudesse mais usar o Rei do Pitaco?', isQuestion: true },
+            ],
+            expectsInput: true,
+            inputType: 'text'
+        },
+        // Step 3: User replies, Rei asks for rating
         {
             messages: [
                 { sender: 'rei', text: 'Certo.' },
@@ -60,7 +70,7 @@ document.addEventListener('DOMContentLoaded', () => {
             expectsInput: true,
             inputType: 'number'
         },
-        // Step 3: User replies (rating), Rei thanks and ends
+        // Step 4: User replies (rating), Rei thanks and ends
         {
             messages: [
                 { sender: 'rei', text: 'Muito obrigado pela sua participação.' },
@@ -212,7 +222,7 @@ document.addEventListener('DOMContentLoaded', () => {
 
         if (step.hideFooter) {
             await new Promise(resolve => setTimeout(resolve, 1000)); // Wait after last message
-            footer.style.display = 'none';
+            footer.classList.add('footer-hidden'); // Add class for fade-out
         }
     }
 
@@ -235,15 +245,36 @@ document.addEventListener('DOMContentLoaded', () => {
             // Now proceed to the original next step
             currentStep++;
             processStep(currentStep);
-        } else if ((currentStep === 0 || currentStep === 1) && text.length < minResponseLength) {
-            // It's the first/second question and the answer is short
+        } else if ((currentStep === 0 || currentStep === 1 || currentStep === 2) && text.length < minResponseLength) {
+            // It's the first, second or third question and the answer is short
             awaitingElaboration = true; // Set flag
 
-            // Ask for elaboration (add message directly, skipping typing indicator for speed)
-            setTimeout(() => { // Short delay before asking
-                addMessage('rei', 'Entendi. Poderia detalhar um pouco mais? Sua opinião completa é muito importante.');
-                enableInput(currentStepConfig.inputType); // Re-enable input for elaboration
-            }, 750); // 750ms delay
+            // Ask for elaboration with typing indicator
+            setTimeout(async () => { // Make callback async
+                const typingDuration = 1500; // Adjust duration as needed
+                const elaborationText = 'Entendi. Poderia detalhar um pouco mais? Sua opinião completa é muito importante.';
+
+                // 1. Add message with typing indicator
+                const reiBubble = addMessage('rei', '', '<span class="typing-indicator"><span></span></span>');
+
+                // 2. Wait for typing duration
+                await new Promise(resolve => setTimeout(resolve, typingDuration));
+
+                // 3. Update bubble with actual text using fade-in
+                reiBubble.innerHTML = `<span class="fade-in-content content-hidden">${elaborationText}</span>`;
+                const textSpan = reiBubble.querySelector('.fade-in-content');
+                if (textSpan) {
+                    requestAnimationFrame(() => {
+                        requestAnimationFrame(() => {
+                            textSpan.classList.remove('content-hidden');
+                        });
+                    });
+                }
+
+                // Scroll and enable input after text appears
+                window.scrollTo({ top: document.body.scrollHeight, behavior: 'smooth' });
+                enableInput(currentStepConfig.inputType);
+            }, 750); // 750ms delay before starting the animation
 
             // Don't proceed to the next step yet, wait for elaboration
             return;
