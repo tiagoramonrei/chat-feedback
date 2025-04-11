@@ -1,3 +1,26 @@
+// Prevent pinch-zoom on iOS
+document.addEventListener('touchstart', function(event) {
+    if (event.touches.length > 1) {
+        event.preventDefault();
+    }
+}, { passive: false });
+
+document.addEventListener('touchmove', function(event) {
+    if (event.touches.length > 1) {
+        event.preventDefault();
+    }
+}, { passive: false });
+
+// Add a simple check to prevent double-tap zoom, might interfere with legitimate double taps
+let lastTouchEnd = 0;
+document.addEventListener('touchend', function(event) {
+    const now = (new Date()).getTime();
+    if (now - lastTouchEnd <= 300) {
+        event.preventDefault();
+    }
+    lastTouchEnd = now;
+}, false);
+
 document.addEventListener('DOMContentLoaded', () => {
     const chatContent = document.querySelector('.basecontent');
     const userInput = document.getElementById('userInput');
