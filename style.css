@@ -293,7 +293,7 @@ body {
   }
   .msgrei, .msgusuario {
     max-width: calc(100vw - 140px); /* Adjust max width based on viewport */
-    padding: 8px;
+    padding: 12px;
     font-size: 12px;
   }
   .input {

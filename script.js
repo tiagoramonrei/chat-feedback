@@ -79,6 +79,15 @@ document.addEventListener('DOMContentLoaded', () => {
     function enableInput(inputType = 'text') {
         userInput.type = inputType;
         userInput.placeholder = inputType === 'number' ? 'Digite apenas números' : 'Digite aqui';
+
+        if (inputType === 'number') {
+            userInput.inputMode = 'numeric';
+            userInput.pattern = '[0-9]*';
+        } else {
+            userInput.removeAttribute('inputmode');
+            userInput.removeAttribute('pattern');
+        }
+
         userInput.disabled = false;
         sendButton.disabled = false;
         userInput.focus();
