@@ -1,0 +1,311 @@
+@import url('https://fonts.googleapis.com/css2?family=DM+Sans:wght@400;500;700&display=swap');
+
+.header {
+  background-image: linear-gradient(#d9d9d9, #fff);
+  border-bottom: 1px solid #f1f1f1;
+  justify-content: center;
+  align-items: center;
+  width: 100%;
+  height: 80px;
+  display: flex;
+  position: fixed;
+  top: 0;
+  left: 0;
+  z-index: 10;
+}
+
+body {
+  font-family: 'DM Sans', sans-serif; /* Use DM Sans with fallback */
+  margin: 0; /* Remove default body margin */
+  padding-top: 80px; /* Prevent content from hiding behind fixed header */
+  padding-bottom: 140px; /* Increased padding to accommodate resizing footer */
+}
+
+.content {
+  justify-content: center;
+  align-items: flex-start;
+  display: flex;
+}
+
+.footer {
+  background-color: #fff;
+  border-top: 1px solid #f1f1f1; /* Add a top border */
+  justify-content: center;
+  align-items: center;
+  width: 100%;
+  /* height: 56px; /* Removed fixed height */
+  display: flex;
+  position: fixed;
+  inset: auto 0% 0%;
+  z-index: 10;
+}
+
+.basefooter {
+  grid-column-gap: 8px;
+  grid-row-gap: 8px;
+  justify-content: flex-start;
+  align-items: end; /* Keep vertical alignment */
+  width: 100%;
+  max-width: 780px;
+  /* height: 56px; /* Removed fixed height */
+  padding: 8px 20px; /* Adjust padding for flexibility */
+  display: flex;
+}
+
+.input {
+  color: #333; /* Darker color for typed text */
+  background-color: #f1f1f1;
+  border: 1px solid #bdbdbd3d; /* Initial border with low opacity */
+  border-radius: 8px;
+  width: 100%;
+  height: 40px !important; /* Use min-height */
+  max-height: 120px; /* Optional: Limit max height */
+  padding: 10px 12px; /* Adjust padding for textarea */
+  font-size: 14px; /* Consistent font size */
+  line-height: 1.4; /* Adjust line-height for multiline */
+  box-sizing: border-box; /* Include padding and border in the element's total width and height */
+  outline: none; /* Remove default focus outline */
+  -webkit-appearance: none; /* Remove default iOS appearance */
+  -moz-appearance: none; /* Remove default Firefox appearance */
+  appearance: none; /* Remove default appearance */
+  transition: border-color 0.2s ease-in-out, height 0.2s ease-in-out; /* Add transition for border color AND height */
+  resize: none; /* Disable manual resizing */
+  overflow-y: hidden; /* Hide vertical scrollbar */
+  font-family: inherit; /* Ensure font is inherited */
+}
+
+.input:focus {
+    border-color: #bdbdbd; /* Change border color to full opacity on focus */
+}
+
+.input::placeholder {
+  color: #8f8f8f; /* Style for placeholder text */
+}
+
+.logorei {
+  width: 218px;
+  height: 24px;
+}
+
+.send-button {
+    background: none;
+    border: none;
+    padding: 0;
+    cursor: pointer;
+    display: flex; /* Align image center */
+    align-items: center; /* Align image center */
+    justify-content: center; /* Align image center */
+}
+
+.send-button:disabled {
+    opacity: 0.32;
+    cursor: not-allowed;
+}
+
+
+.btnenviar {
+  width: 40px;
+  height: 40px;
+}
+
+.basecontent {
+  grid-column-gap: 24px;
+  grid-row-gap: 8px;
+  flex-flow: column;
+  justify-content: flex-start;
+  align-items: flex-start;
+  width: 100%;
+  max-width: 780px;
+  padding: 20px 20px 20px; /* Adjusted padding */
+  display: flex;
+  box-sizing: border-box;
+}
+
+.baserei {
+  grid-column-gap: 8px;
+  grid-row-gap: 8px;
+  align-items: flex-start;
+  width: auto; /* Fit content */
+  display: flex;
+  opacity: 0;
+  transform: translateY(10px);
+  transition: opacity 0.5s ease-out, transform 0.5s ease-out;
+}
+
+/* Style for hiding icon on consecutive messages */
+.baserei.no-icon .iconrei,
+.baseusuario.no-icon .iconusuario {
+    display: none; /* Remove icon completely from layout */
+}
+
+/* Add indentation for messages without icon */
+.baserei.no-icon .basemsgrei {
+    margin-left: 40px; /* 32px icon width + 8px gap */
+}
+
+.baseusuario.no-icon .basemsgusuario {
+    margin-right: 40px; /* 32px icon width + 8px gap */
+}
+
+.baserei.visible, .baseusuario.visible {
+    opacity: 1;
+    transform: translateY(0);
+}
+
+.iconrei {
+  width: 32px;
+  height: 32px;
+  flex-shrink: 0; /* Prevent icon shrinking */
+}
+
+.basemsgrei {
+  grid-column-gap: 8px;
+  grid-row-gap: 8px;
+  flex-flow: column;
+  justify-content: flex-start;
+  align-items: flex-start;
+  display: flex;
+}
+
+.msgrei {
+  color: #fff;
+  background-color: #32a866;
+  border-top-right-radius: 8px;
+  border-bottom-right-radius: 8px;
+  border-bottom-left-radius: 8px;
+  max-width: 400px;
+  padding: 12px;
+  line-height: 120%;
+  font-size: 14px; /* Consistent font size */
+}
+
+/* New class for fading in text content */
+.fade-in-content {
+    opacity: 1;
+    transition: opacity 0.5s ease-in-out; /* Apply transition here */
+}
+
+.fade-in-content.content-hidden {
+    opacity: 0; /* Start hidden */
+}
+
+.baseusuario {
+  grid-column-gap: 8px;
+  grid-row-gap: 8px;
+  justify-content: flex-end;
+  align-items: flex-start;
+  width: 100%; /* Take full width to push to the right */
+  display: flex;
+  opacity: 0;
+  transform: translateY(10px);
+  transition: opacity 0.5s ease-out, transform 0.5s ease-out;
+  margin: 16px 0;
+}
+
+.iconusuario {
+  width: 32px;
+  height: 32px;
+  flex-shrink: 0; /* Prevent icon shrinking */
+}
+
+.basemsgusuario {
+  grid-column-gap: 8px;
+  grid-row-gap: 8px;
+  flex-flow: column;
+  align-items: flex-end;
+  display: flex;
+}
+
+.msgusuario {
+  color: #000;
+  background-color: #f1f1f1;
+  border-radius: 8px 0 8px 8px;
+  max-width: 400px;
+  padding: 12px;
+  line-height: 120%;
+  font-size: 14px; /* Consistent font size */
+  text-align: left; /* Ensure text aligns left within the bubble */
+}
+
+/* Style for typing indicator */
+.typing-indicator {
+    /* opacity: 0.6; /* Remove static opacity */
+    display: inline-block; /* Allows manipulation */
+    position: relative;
+    width: 20px; /* Adjust width as needed */
+    height: 10px; /* Adjust height as needed */
+    margin: 0 5px; /* Add some spacing */
+}
+
+.typing-indicator::before,
+.typing-indicator::after,
+.typing-indicator span::before { /* Use a nested span for the middle dot */
+    content: '';
+    position: absolute;
+    bottom: 0;
+    width: 4px; /* Dot size */
+    height: 4px; /* Dot size */
+    background-color: currentColor; /* Use bubble text color */
+    border-radius: 50%;
+    animation: typing-pulse 1.4s infinite ease-in-out both;
+}
+
+/* Span for middle dot - needed for animation delay */
+.typing-indicator span {
+    display: block;
+    position: absolute;
+    top: 0; left: 0; bottom: 0; right: 0;
+}
+
+.typing-indicator::before {
+    left: 0;
+    animation-delay: 0s; /* Start first dot immediately */
+}
+
+.typing-indicator span::before {
+    left: 8px; /* Position middle dot */
+    animation-delay: 0.2s; /* Delay second dot */
+}
+
+.typing-indicator::after {
+    left: 16px; /* Position right dot */
+    animation-delay: 0.4s; /* Delay third dot */
+}
+
+/* New animation using opacity pulse */
+@keyframes typing-pulse {
+    0%, 60%, 100% {
+        opacity: 0.4;
+    }
+    20% {
+        opacity: 1;
+    }
+}
+
+@media screen and (max-width: 767px) {
+  .logorei {
+    width: 180px; /* Adjust logo size */
+  }
+  .basecontent {
+      padding: 15px 15px 15px; /* Adjust padding */
+      grid-column-gap: 16px;
+      grid-row-gap: 8px;
+  }
+  .msgrei, .msgusuario {
+    max-width: calc(100vw - 100px); /* Adjust max width based on viewport */
+    padding: 8px;
+    font-size: 12px;
+  }
+  .input {
+      height: 40px !important; /* Adjust min-height for mobile */
+      font-size: 12px;
+      padding: 10px 12px; /* Adjust padding */
+  }
+  .btnenviar {
+      width: 40px;
+      height: 40px;
+  }
+  .basefooter {
+      padding: 8px 20px; /* Adjust padding */
+  }
+}
