@@ -19,10 +19,6 @@ body {
   margin: 0; /* Remove default body margin */
   padding-top: 80px; /* Prevent content from hiding behind fixed header */
   padding-bottom: 140px; /* Increased padding to accommodate resizing footer */
-
-  -webkit-font-smoothing: antialiased;
-  -moz-osx-font-smoothing: antialiased;
-  font-smoothing: antialiased;
 }
 
 .content {
@@ -64,7 +60,7 @@ body {
   width: 100%;
   min-height: 40px !important; /* Use min-height */
   max-height: 120px; /* Optional: Limit max height */
-  padding: 8px 12px; /* Adjust padding for textarea */
+  padding: 9px 12px; /* Adjust padding for textarea */
   font-size: 14px; /* Consistent font size */
   line-height: 1.4; /* Adjust line-height for multiline */
   box-sizing: border-box; /* Include padding and border in the element's total width and height */
@@ -303,7 +299,7 @@ body {
   .input {
       min-height: 40px !important; /* Adjust min-height for mobile */
       font-size: 12px;
-      padding: 8px 12px; /* Adjust padding */
+      padding: 9px 12px; /* Adjust padding */
   }
   .btnenviar {
       width: 40px;
