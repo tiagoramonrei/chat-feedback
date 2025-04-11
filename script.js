@@ -264,7 +264,7 @@ document.addEventListener('DOMContentLoaded', () => {
 
     sendButton.addEventListener('click', handleSend);
 
-    // Auto-resize textarea and add real-time number validation
+    // Add real-time number validation
     userInput.addEventListener('input', () => {
         let value = userInput.value;
         let needsUpdate = false;
@@ -294,18 +294,6 @@ document.addEventListener('DOMContentLoaded', () => {
         // 4. Apply update if needed
         if (needsUpdate) {
             userInput.value = value;
-        }
-
-        // 5. Auto-resize logic (always run)
-        userInput.style.height = 'auto'; // Reset height
-        const scrollHeight = userInput.scrollHeight;
-        const maxHeight = parseInt(window.getComputedStyle(userInput).maxHeight, 10);
-        if (scrollHeight > maxHeight) {
-             userInput.style.height = maxHeight + 'px';
-             userInput.style.overflowY = 'auto'; // Show scroll if needed at max height
-        } else {
-             userInput.style.height = scrollHeight + 'px';
-             userInput.style.overflowY = 'hidden'; // Hide scroll otherwise
         }
     });
 
