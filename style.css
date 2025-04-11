@@ -19,6 +19,10 @@ body {
   margin: 0; /* Remove default body margin */
   padding-top: 80px; /* Prevent content from hiding behind fixed header */
   padding-bottom: 140px; /* Increased padding to accommodate resizing footer */
+
+  -webkit-font-smoothing: antialiased;
+  -moz-osx-font-smoothing: antialiased;
+  font-smoothing: antialiased;
 }
 
 .content {
