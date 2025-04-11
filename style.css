@@ -62,9 +62,9 @@ body {
   border: 1px solid #bdbdbd3d; /* Initial border with low opacity */
   border-radius: 8px;
   width: 100%;
-  height: 40px !important; /* Use min-height */
+  min-height: 40px !important; /* Use min-height */
   max-height: 120px; /* Optional: Limit max height */
-  padding: 10px 12px; /* Adjust padding for textarea */
+  padding: 8px 12px; /* Adjust padding for textarea */
   font-size: 14px; /* Consistent font size */
   line-height: 1.4; /* Adjust line-height for multiline */
   box-sizing: border-box; /* Include padding and border in the element's total width and height */
@@ -291,19 +291,19 @@ body {
     width: 180px; /* Adjust logo size */
   }
   .basecontent {
-      padding: 15px 15px 15px; /* Adjust padding */
+      padding: 20px 20px 20px; /* Adjust padding */
       grid-column-gap: 16px;
       grid-row-gap: 8px;
   }
   .msgrei, .msgusuario {
-    max-width: calc(100vw - 100px); /* Adjust max width based on viewport */
+    max-width: calc(100vw - 140px); /* Adjust max width based on viewport */
     padding: 8px;
     font-size: 12px;
   }
   .input {
-      height: 40px !important; /* Adjust min-height for mobile */
+      min-height: 40px !important; /* Adjust min-height for mobile */
       font-size: 12px;
-      padding: 10px 12px; /* Adjust padding */
+      padding: 8px 12px; /* Adjust padding */
   }
   .btnenviar {
       width: 40px;
